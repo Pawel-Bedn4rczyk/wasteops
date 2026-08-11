@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Database\Factories\EquipmentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int $id
@@ -18,5 +19,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 #[Fillable(['name', 'type', 'serial_number'])]
 class Equipment extends Model
 {
+    /** @use HasFactory<EquipmentFactory> */
     use HasFactory;
+
+    /**
+     * @var array<string, string>
+     */
+    public const TYPES = [
+        'waga' => 'Waga',
+        'prasa' => 'Prasa',
+        'sortownik' => 'Sortownik',
+        'kontener' => 'Kontener',
+        'pojazd' => 'Pojazd',
+    ];
 }

@@ -44,9 +44,9 @@ class EquipmentFactory extends Factory
                 'Ładowarka teleskopowa',
             ],
         ];
-    
-        $type = fake()->randomElement(array_keys($catalog));
-    
+
+        $type = fake()->randomElement(array_keys(Equipment::TYPES));
+
         return [
             'name' => fake()->randomElement($catalog[$type]),
             'type' => $type,

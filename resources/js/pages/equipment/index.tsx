@@ -1,3 +1,6 @@
+import { Link } from '@inertiajs/react';
+import { create } from '@/routes/equipment';
+
 type Equipment = {
     id: number;
     name: string;
@@ -14,6 +17,10 @@ export default function Index({ equipment }: Props) {
         <div>
             <h1>Urządzenia</h1>
 
+            <p>
+                <Link href={create()}>Dodaj urządzenie</Link>
+            </p>
+
             <ul>
                 {equipment.map((item) => (
                     <li key={item.id}>
@@ -24,3 +31,4 @@ export default function Index({ equipment }: Props) {
         </div>
     );
 }
+
