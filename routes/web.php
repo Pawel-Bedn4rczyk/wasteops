@@ -20,4 +20,8 @@ Route::post('/equipment', [EquipmentController::class, 'store'])
 Route::get('/incidents', [IncidentController::class, 'index'])
     ->name('incidents.index');
 
+Route::get('/incidents/create', [IncidentController::class, 'create'])
+    ->name('incidents.create');
 
+Route::post('/incidents', [IncidentController::class, 'store'])
+    ->name('incidents.store');
