@@ -1,12 +1,13 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\IncidentController;
 use Illuminate\Support\Facades\Route;
 
-//  Equipment routes
-Route::redirect('/', '/equipment')->name('home');
+Route::get('/', [DashboardController::class, 'index'])->name('home');
 
+//  Equipment routes
 Route::get('/equipment', [EquipmentController::class, 'index'])
     ->name('equipment.index');
 
