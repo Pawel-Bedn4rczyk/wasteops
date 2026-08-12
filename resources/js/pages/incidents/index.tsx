@@ -1,6 +1,7 @@
-import { Link } from "@inertiajs/react";
+import { Form, Link } from "@inertiajs/react";
 import { AlertTriangle } from "lucide-react";
-import { create } from "@/routes/incidents";
+import { useState } from "react";
+import { create, update } from "@/routes/incidents";
 
 type Incident = {
 	id: number;
@@ -14,6 +15,55 @@ type Props = {
 	statuses: Record<string, string>;
 };
 
+function IncidentStatusForm({
+	incidentId,
+	status,
+	statuses,
+}: {
+	incidentId: number;
+	status: string;
+	statuses: Record<string, string>;
+}) {
+	const [selected, setSelected] = useState(status);
+	const isDirty = selected !== status;
+
+	const statusColorClass: Record<string, string> = {
+		open: "text-red-400",
+		in_progress: "text-yellow-500",
+		resolved: "text-green-500",
+	};
+
+	return (
+		<Form {...update.form(incidentId)} className="flex items-center gap-2">
+			{({ processing }) => (
+				<>
+					<select
+						name="status"
+						value={selected}
+						onChange={(e) => setSelected(e.target.value)}
+						className={`rounded border bg-secondary text-sm ${statusColorClass[selected] ?? ""}`}
+					>
+						{Object.entries(statuses).map(([value, label]) => (
+							<option key={value} value={value} className={`${statusColorClass[value] ?? ""}`}>
+								{label}
+							</option>
+						))}
+					</select>
+					{isDirty && (
+						<button
+							className="rounded bg-secondary px-1 py-1 text-sm text-primary-foreground hover:bg-primary/90"
+							type="submit"
+							disabled={processing}
+						>
+							Zapisz
+						</button>
+					)}
+				</>
+			)}
+		</Form>
+	);
+}
+
 export default function Index({ incidents, statuses }: Props) {
 	return (
 		<div className="p-4">
@@ -26,7 +76,7 @@ export default function Index({ incidents, statuses }: Props) {
 					href={create()}
 					className="rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
 				>
-					Dodaj awarie
+					Dodaj awarię
 				</Link>
 			</div>
 
@@ -50,7 +100,13 @@ export default function Index({ incidents, statuses }: Props) {
 							incidents.map((incident) => (
 								<tr key={incident.id} className="border-b last:border-0">
 									<td className="px-3 py-2">{incident.title}</td>
-									<td className="px-3 py-2"> {statuses[incident.status] ?? incident.status}</td>
+									<td className="px-3 py-2">
+										<IncidentStatusForm
+											incidentId={incident.id}
+											status={incident.status}
+											statuses={statuses}
+										/>
+									</td>
 									<td className="px-3 py-2">
 										{incident.equipment?.name ?? "-"}
 										{incident.equipment?.serial_number

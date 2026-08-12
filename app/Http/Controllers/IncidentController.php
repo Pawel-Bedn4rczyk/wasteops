@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Inertia\Response as InertiaResponse;
 use App\Http\Requests\StoreIncidentRequest;
 use App\Models\Equipment;
+use App\Http\Requests\UpdateIncidentRequest;
 
 class IncidentController extends Controller
 {
@@ -16,7 +17,7 @@ class IncidentController extends Controller
 
         $incidents = Incident::query()
             ->with('equipment')
-            ->latest()
+            ->orderBy('status')
             ->get();
 
         return Inertia::render('incidents/index', [
@@ -37,6 +38,13 @@ class IncidentController extends Controller
     public function store(StoreIncidentRequest $request): RedirectResponse
     {
         Incident::create([...$request->validated(), 'status' => 'open']);
+
+        return redirect()->route('incidents.index');
+    }
+
+    public function update(UpdateIncidentRequest $request, Incident $incident): RedirectResponse
+    {
+        $incident->update($request->validated());
 
         return redirect()->route('incidents.index');
     }
