@@ -6,16 +6,9 @@ use Database\Factories\EquipmentFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Incident;
 
-/**
- * @property int $id
- * @property string $name
- * @property string $type
- * @property string|null $serial_number
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- */
 #[Fillable(['name', 'type', 'serial_number'])]
 class Equipment extends Model
 {
@@ -32,4 +25,10 @@ class Equipment extends Model
         'kontener' => 'Kontener',
         'pojazd' => 'Pojazd',
     ];
+
+    public function incidents(): HasMany
+    {
+        return $this->hasMany(Incident::class);
+    }
+
 }
