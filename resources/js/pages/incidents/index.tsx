@@ -1,31 +1,33 @@
 import { Link } from '@inertiajs/react';
-import {Wrench} from 'lucide-react';
-import { create } from '@/routes/equipment';
+import { AlertTriangle } from 'lucide-react';
 
-type Equipment = {
-    id: number;
-    name: string;
-    type: string;
-    serial_number: string | null;
+
+type Incident = {
+  id: number;
+  title: string;
+  status: string;
+  equipment: { id: number; name: string } | null;
 };
 
 type Props = {
-    equipment: Equipment[];
+  incidents: Incident[];
+  statuses: Record<string, string>;
 };
 
-export default function Index({ equipment }: Props) {
+export default function Index({ incidents, statuses }: Props) {
     return (
         <div className="p-4">
             <div className="mb-4 flex items-center justify-between gap-3">
-            <div className="flex  gap-2">
-                <Wrench className="w-6 h-6 " />
-                <h1 className="text-xl font-semibold">Urządzenia</h1>
-                </div>
+              <div className="flex  gap-2">
+                <AlertTriangle className="w-6 h-6 " />
+                <h1 className="text-xl font-semibold flex items-center gap-2">
+                    Awarie
+                </h1>
+              </div>
                 <Link
-                    href={create()}
                     className="rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
                 >
-                    Dodaj urządzenie
+                    Dodaj awarie
                 </Link>
             </div>
 
@@ -33,28 +35,28 @@ export default function Index({ equipment }: Props) {
                 <table className="w-full text-left text-sm">
                     <thead className="border-b bg-muted/60 text-muted-foreground">
                         <tr>
-                            <th className="px-3 py-2 font-medium">Nazwa</th>
-                            <th className="px-3 py-2 font-medium">Typ</th>
-                            <th className="px-3 py-2 font-medium">Numer seryjny</th>
+                            <th className="px-3 py-2 font-medium">Tytuł</th>
+                            <th className="px-3 py-2 font-medium">Status</th>
+                            <th className="px-3 py-2 font-medium">Urządzenie powiązane</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {equipment.length === 0 ? (
+                        {incidents.length === 0 ? (
                             <tr>
                                 <td
                                     colSpan={3}
                                     className="px-3 py-6 text-center text-muted-foreground"
                                 >
-                                    Brak urządzeń.
+                                    Brak awarii.
                                 </td>
                             </tr>
                         ) : (
-                            equipment.map((item) => (
-                                <tr key={item.id} className="border-b last:border-0">
-                                    <td className="px-3 py-2">{item.name}</td>
-                                    <td className="px-3 py-2">{item.type}</td>
+                          incidents.map((incident) => (
+                                <tr key={incident.id} className="border-b last:border-0">
+                                    <td className="px-3 py-2">{incident.title}</td>
+                                    <td className="px-3 py-2"> {statuses[incident.status] ?? incident.status}</td>
                                     <td className="px-3 py-2">
-                                        {item.serial_number ?? '-'}
+                                        {incident.equipment?.name ?? '-'}
                                     </td>
                                 </tr>
                             ))
