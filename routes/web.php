@@ -27,5 +27,8 @@ Route::get('/incidents/create', [IncidentController::class, 'create'])
 Route::post('/incidents', [IncidentController::class, 'store'])
     ->name('incidents.store');
 
+Route::get('/incidents/{incident}', [IncidentController::class, 'show'])
+    ->name('incidents.show');
+
 Route::patch('/incidents/{incident}', [IncidentController::class, 'update'])
     ->name('incidents.update');
