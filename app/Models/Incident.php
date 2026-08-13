@@ -40,4 +40,9 @@ class Incident extends Model
     {
         return $this->status !== 'resolved';
     }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(IncidentActivity::class);
+    }
 }
