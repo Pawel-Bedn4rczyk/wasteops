@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[Fillable(['incident_id', 'body', 'author_name'])]
 class Comment extends Model
 {
-    /** @use HasFactory<\Database\Factories\IncidentFactory> */
+    /** @use HasFactory<\Database\Factories\CommentFactory> */
     use HasFactory;
 
     public function incident(): BelongsTo

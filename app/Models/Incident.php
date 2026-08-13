@@ -35,4 +35,9 @@ class Incident extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function acceptsComments(): bool
+    {
+        return $this->status !== 'resolved';
+    }
 }

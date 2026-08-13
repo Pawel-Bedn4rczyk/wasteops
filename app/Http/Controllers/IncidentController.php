@@ -28,7 +28,7 @@ class IncidentController extends Controller
 
     public function show(Incident $incident): InertiaResponse
     {
-        $incident->load('equipment');
+        $incident->load(['equipment', 'comments' => fn($query) => $query->latest()]);
 
         return Inertia::render('incidents/show', [
             'incident' => $incident,
@@ -56,5 +56,6 @@ class IncidentController extends Controller
     {
         $incident->update($request->validated());
 
-        return redirect()->route('incidents.show', $incident);    }
+        return redirect()->route('incidents.show', $incident);
+    }
 }

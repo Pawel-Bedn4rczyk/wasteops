@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EquipmentController;
 use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [DashboardController::class, 'index'])->name('home');
@@ -32,3 +33,6 @@ Route::get('/incidents/{incident}', [IncidentController::class, 'show'])
 
 Route::patch('/incidents/{incident}', [IncidentController::class, 'update'])
     ->name('incidents.update');
+
+Route::post('/incidents/{incident}/comments', [CommentController::class, 'store'])
+    ->name('incidents.comments.store');
