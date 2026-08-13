@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Equipment;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 #[Fillable(['equipment_id', 'title', 'description', 'status'])]
@@ -30,4 +31,8 @@ class Incident extends Model
         return $this->belongsTo(Equipment::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
