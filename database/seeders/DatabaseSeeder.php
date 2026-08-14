@@ -9,19 +9,24 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::query()->updateOrCreate(
+        $this->call(RolesAndPermissionsSeeder::class);
+
+        $admin = User::query()->updateOrCreate(
             ['email' => 'admin@wasteops.test'],
             ['name' => 'Admin', 'password' => 'password'],
         );
+        $admin->syncRoles(['admin']);
 
-        User::query()->updateOrCreate(
+        $technician = User::query()->updateOrCreate(
             ['email' => 'technik@wasteops.test'],
             ['name' => 'Technik', 'password' => 'password'],
         );
+        $technician->syncRoles(['technician']);
 
-        User::query()->updateOrCreate(
+        $operator = User::query()->updateOrCreate(
             ['email' => 'operator@wasteops.test'],
             ['name' => 'Operator', 'password' => 'password'],
         );
+        $operator->syncRoles(['operator']);
     }
 }

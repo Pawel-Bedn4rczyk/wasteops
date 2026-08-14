@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Spatie\Permission\Traits\HasRoles;
+
 
 /**
  * @property int $id
@@ -22,7 +24,7 @@ use Illuminate\Support\Carbon;
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, HasRoles;
 
     /**
      * @return array<string, string>
