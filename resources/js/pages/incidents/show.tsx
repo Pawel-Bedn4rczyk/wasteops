@@ -1,5 +1,6 @@
 import { Form, Link } from "@inertiajs/react";
 import { AlertTriangle } from "lucide-react";
+import { useCan } from "@/hooks/use-can";
 import { statusColorClass } from "@/lib/incident-status";
 import { index } from "@/routes/incidents";
 import { store as storeComment } from "@/routes/incidents/comments";
@@ -39,7 +40,8 @@ type Props = {
 };
 
 export default function Show({ incident, statuses }: Props) {
-	const canComment = incident.status !== "resolved";
+	const { can } = useCan();
+	const canComment = can("incidents.comment") && incident.status !== "resolved";
 
 	return (
 		<div className="flex min-h-[calc(100svh-3rem)] flex-col">
