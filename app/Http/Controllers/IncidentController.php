@@ -9,6 +9,7 @@ use Inertia\Response as InertiaResponse;
 use App\Http\Requests\StoreIncidentRequest;
 use App\Models\Equipment;
 use App\Http\Requests\UpdateIncidentRequest;
+use App\Models\IncidentActivity;
 
 class IncidentController extends Controller
 {
@@ -28,7 +29,11 @@ class IncidentController extends Controller
 
     public function show(Incident $incident): InertiaResponse
     {
-        $incident->load(['equipment', 'comments' => fn($query) => $query->latest()]);
+        $incident->load([
+            'equipment',
+            'comments' => fn($query) => $query->latest(),
+            'activities' => fn($query) => $query->latest(),
+        ]);
 
         return Inertia::render('incidents/show', [
             'incident' => $incident,
@@ -47,14 +52,33 @@ class IncidentController extends Controller
 
     public function store(StoreIncidentRequest $request): RedirectResponse
     {
-        Incident::create([...$request->validated(), 'status' => 'open']);
+        $incident = Incident::create([...$request->validated(), 'status' => 'open']);
+
+        $incident->activities()->create([
+            'type' => 'created',
+            'title' => IncidentActivity::TYPES['created'],
+            'subtitle' => 'Nowa awaria',
+            'status_label' => Incident::STATUSES[$incident->status] ?? $incident->status,
+        ]);
 
         return redirect()->route('incidents.index');
     }
 
     public function update(UpdateIncidentRequest $request, Incident $incident): RedirectResponse
     {
+        $oldStatus = $incident->status;
         $incident->update($request->validated());
+
+        if ($oldStatus !== $incident->status) {
+            $oldLabel = Incident::STATUSES[$oldStatus] ?? $oldStatus;
+            $newLabel = Incident::STATUSES[$incident->status] ?? $incident->status;
+            $incident->activities()->create([
+                'type' => 'status_changed',
+                'title' => IncidentActivity::TYPES['status_changed'],
+                'subtitle' => "{$oldLabel} → {$newLabel}",
+                'status_label' => $newLabel,
+            ]);
+        }
 
         return redirect()->route('incidents.show', $incident);
     }
