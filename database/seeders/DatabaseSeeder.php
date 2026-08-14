@@ -28,5 +28,10 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Operator', 'password' => 'password'],
         );
         $operator->syncRoles(['operator']);
+
+        $this->call([
+            EquipmentSeeder::class,
+            IncidentSeeder::class,
+        ]);
     }
 }

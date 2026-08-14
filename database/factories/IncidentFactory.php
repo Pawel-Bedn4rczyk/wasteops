@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Equipment;
 use App\Models\Incident;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\IncidentActivity;
 
 /**
  * @extends Factory<Incident>
@@ -55,5 +56,19 @@ class IncidentFactory extends Factory
             'description' => $incident['description'],
             'status' => fake()->randomElement(array_keys(Incident::STATUSES)),
         ];
+    }
+    /**
+     * @return static
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Incident $incident): void {
+            $incident->activities()->create([
+                'type' => 'created',
+                'title' => IncidentActivity::TYPES['created'],
+                'subtitle' => 'Nowa awaria',
+                'status_label' => Incident::STATUSES[$incident->status] ?? $incident->status,
+            ]);
+        });
     }
 }
