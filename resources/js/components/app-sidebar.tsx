@@ -23,14 +23,14 @@ const mainNavItems: NavItem[] = [
 		icon: LayoutDashboard,
 	},
 	{
-		title: "Urządzenia",
-		href: equipment(),
-		icon: Wrench,
-	},
-	{
 		title: "Awarie",
 		href: incidents(),
 		icon: AlertTriangle,
+	},
+	{
+		title: "Urządzenia",
+		href: equipment(),
+		icon: Wrench,
 	},
 ];
 
