@@ -16,6 +16,8 @@ class IncidentController extends Controller
     public function index(): InertiaResponse
     {
 
+        $this->authorize('viewAny', Incident::class);
+
         $incidents = Incident::query()
             ->with('equipment')
             ->orderBy('status')
@@ -29,6 +31,8 @@ class IncidentController extends Controller
 
     public function show(Incident $incident): InertiaResponse
     {
+        $this->authorize('view', $incident);
+
         $incident->load([
             'equipment',
             'comments' => fn($query) => $query->latest(),
@@ -43,6 +47,7 @@ class IncidentController extends Controller
 
     public function create(): InertiaResponse
     {
+        $this->authorize('create', Incident::class);
         return Inertia::render('incidents/create', [
             'equipment' => Equipment::query()
                 ->orderBy('name')

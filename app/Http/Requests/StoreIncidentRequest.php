@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use App\Models\Incident;
 
 class StoreIncidentRequest extends FormRequest
 {
@@ -13,7 +14,7 @@ class StoreIncidentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->can('create', Incident::class);
     }
 
     /**

@@ -12,6 +12,8 @@ class EquipmentController extends Controller
 {
     public function index(): InertiaResponse
     {
+        $this->authorize('viewAny', Equipment::class);
+
         $equipment = Equipment::query()->get();
 
         return Inertia::render('equipment/index', [
@@ -21,6 +23,8 @@ class EquipmentController extends Controller
 
     public function create(): InertiaResponse
     {
+        $this->authorize('create', Equipment::class);
+
         return Inertia::render('equipment/create', [
             'types' => Equipment::TYPES,
         ]);

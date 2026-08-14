@@ -14,7 +14,9 @@ class UpdateIncidentRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        /** @var Incident $incident */
+        $incident = $this->route('incident');
+        return $this->user()->can('updateStatus', $incident);
     }
 
     /**

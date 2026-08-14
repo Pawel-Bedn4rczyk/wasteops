@@ -15,7 +15,9 @@ class StoreCommentRequest extends FormRequest
     {
         /** @var Incident $incident */
         $incident = $this->route('incident');
-        return $incident->acceptsComments();
+
+        return $this->user()->can('comment', $incident)
+            && $incident->acceptsComments();
     }
 
     /**
