@@ -66,7 +66,6 @@ class IncidentFactory extends Factory
             $incident->activities()->create([
                 'type' => 'created',
                 'title' => IncidentActivity::TYPES['created'],
-                'subtitle' => 'Nowa awaria',
                 'status_label' => Incident::STATUSES[$incident->status] ?? $incident->status,
             ]);
         });

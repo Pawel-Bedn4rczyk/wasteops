@@ -213,11 +213,9 @@ export default function Show({ incident, statuses }: Props) {
 											<div className="flex items-start justify-between gap-3">
 												<div className="min-w-0">
 													<p className="text-sm leading-snug font-medium">{activity.title}</p>
-													{activity.subtitle && (
-														<p className="mt-0.5 text-xs text-muted-foreground">
-															{activity.subtitle}
-														</p>
-													)}
+													<p className="mt-0.5 text-xs text-muted-foreground">
+														{activity.subtitle || "Nowa awaria"}
+													</p>
 												</div>
 
 												<div className="shrink-0 text-right">
