@@ -1,8 +1,9 @@
 import { Form, Link } from "@inertiajs/react";
 import { AlertTriangle } from "lucide-react";
+import { useState } from "react";
 import { useCan } from "@/hooks/use-can";
 import { statusColorClass } from "@/lib/incident-status";
-import { index } from "@/routes/incidents";
+import { index, update } from "@/routes/incidents";
 import { store as storeComment } from "@/routes/incidents/comments";
 
 type Comment = {
@@ -40,8 +41,11 @@ type Props = {
 };
 
 export default function Show({ incident, statuses }: Props) {
+	const [selected, setSelected] = useState(incident.status);
+	const isDirty = selected !== incident.status;
 	const { can } = useCan();
 	const canComment = can("incidents.comment") && incident.status !== "resolved";
+	const canUpdateStatus = can("incidents.update_status");
 
 	return (
 		<div className="flex min-h-[calc(100svh-3rem)] flex-col">
@@ -75,9 +79,53 @@ export default function Show({ incident, statuses }: Props) {
 
 						<div>
 							<dt className="text-xs text-muted-foreground">Status</dt>
-							<dd className={`mt-1 text-sm font-medium ${statusColorClass[incident.status] ?? ""}`}>
-								{statuses[incident.status] ?? incident.status}
-							</dd>
+							{canUpdateStatus ? (
+								<dd className="mt-1">
+									<Form {...update.form(incident.id)} className="flex flex-wrap items-end gap-2">
+										{({ errors, processing }) => (
+											<>
+												<div className="min-w-[12rem] flex-1 space-y-1">
+													<select
+														id="status"
+														name="status"
+														defaultValue={incident.status}
+														className={`w-full rounded border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring ${statusColorClass[selected] ?? ""}`}
+														onChange={(e) => setSelected(e.target.value)}
+													>
+														{Object.entries(statuses).map(([value, label]) => (
+															<option
+																key={value}
+																value={value}
+																className={statusColorClass[value] ?? ""}
+															>
+																{label}
+															</option>
+														))}
+													</select>
+													{errors.status && (
+														<div className="text-sm text-destructive">{errors.status}</div>
+													)}
+												</div>
+												{isDirty && (
+													<button
+														type="submit"
+														disabled={processing}
+														className="rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+													>
+														{processing ? "Zapisywanie..." : "Zapisz"}
+													</button>
+												)}
+											</>
+										)}
+									</Form>
+								</dd>
+							) : (
+								<dd
+									className={`mt-1 text-sm font-medium ${statusColorClass[incident.status] ?? ""}`}
+								>
+									{statuses[incident.status] ?? incident.status}
+								</dd>
+							)}
 						</div>
 
 						<div className="sm:col-span-2">
