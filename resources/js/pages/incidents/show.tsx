@@ -1,9 +1,9 @@
-import { Form, Link } from "@inertiajs/react";
+import { Form } from "@inertiajs/react";
 import { AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useCan } from "@/hooks/use-can";
 import { statusColorClass } from "@/lib/incident-status";
-import { index, update } from "@/routes/incidents";
+import { update } from "@/routes/incidents";
 import { store as storeComment } from "@/routes/incidents/comments";
 
 type Comment = {
@@ -54,9 +54,13 @@ export default function Show({ incident, statuses }: Props) {
 					<AlertTriangle className="h-5 w-5 shrink-0" />
 					<h1 className="truncate text-lg font-semibold">{incident.title}</h1>
 				</div>
-				<Link href={index()} className="shrink-0 text-sm text-primary hover:underline">
-					← Lista
-				</Link>
+				<button
+					type="button"
+					onClick={() => window.history.back()}
+					className="text-sm text-primary hover:underline"
+				>
+					← Wróć
+				</button>
 			</header>
 
 			<div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4 lg:p-6">

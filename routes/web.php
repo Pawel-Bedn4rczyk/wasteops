@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('home');
 
+    // Equipment
     Route::get('/equipment', [EquipmentController::class, 'index'])
         ->name('equipment.index');
 
@@ -18,6 +19,19 @@ Route::middleware('auth')->group(function () {
     Route::post('/equipment', [EquipmentController::class, 'store'])
         ->name('equipment.store');
 
+    Route::get('/equipment/{equipment}', [EquipmentController::class, 'show'])
+        ->name('equipment.show');
+
+    Route::get('/equipment/{equipment}/edit', [EquipmentController::class, 'edit'])
+        ->name('equipment.edit');
+
+    Route::patch('/equipment/{equipment}', [EquipmentController::class, 'update'])
+        ->name('equipment.update');
+
+    Route::delete('/equipment/{equipment}', [EquipmentController::class, 'destroy'])
+        ->name('equipment.destroy');
+
+    // Incidents
     Route::get('/incidents', [IncidentController::class, 'index'])
         ->name('incidents.index');
 

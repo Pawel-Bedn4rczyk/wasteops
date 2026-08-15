@@ -1,5 +1,5 @@
 import { Link } from "@inertiajs/react";
-import { AlertTriangle, Eye } from "lucide-react";
+import { AlertTriangle, FolderSearch2Icon } from "lucide-react";
 import { useCan } from "@/hooks/use-can";
 import { statusColorClass } from "@/lib/incident-status";
 import { create, show } from "@/routes/incidents";
@@ -75,7 +75,7 @@ export default function Index({ incidents, statuses }: Props) {
 												aria-label="Szczegóły"
 												className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
 											>
-												<Eye className="h-4 w-4" />
+												<FolderSearch2Icon className="h-4 w-4" />
 											</Link>
 										</div>
 									</td>

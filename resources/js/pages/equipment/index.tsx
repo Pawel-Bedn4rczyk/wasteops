@@ -1,7 +1,7 @@
 import { Link } from "@inertiajs/react";
-import { Wrench } from "lucide-react";
+import { FolderSearch2Icon, Pencil, Wrench } from "lucide-react";
 import { useCan } from "@/hooks/use-can";
-import { create } from "@/routes/equipment";
+import { create, edit, show } from "@/routes/equipment";
 
 type Equipment = {
 	id: number;
@@ -41,6 +41,7 @@ export default function Index({ equipment }: Props) {
 							<th className="px-3 py-2 font-medium">Nazwa</th>
 							<th className="px-3 py-2 font-medium">Typ</th>
 							<th className="px-3 py-2 font-medium">Numer seryjny</th>
+							<th className="px-3 py-2  text-right font-medium">Akcje</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -56,6 +57,28 @@ export default function Index({ equipment }: Props) {
 									<td className="px-3 py-2">{item.name}</td>
 									<td className="px-3 py-2">{item.type}</td>
 									<td className="px-3 py-2">{item.serial_number ?? "-"}</td>
+									<td className="px-3 py-2">
+										<div className="flex items-center justify-end gap-1">
+											<Link
+												href={show(item.id)}
+												title="Szczegóły"
+												aria-label="Szczegóły"
+												className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+											>
+												<FolderSearch2Icon className="h-4 w-4" />
+											</Link>
+											{can("equipment.update") && (
+												<Link
+													href={edit(item.id)}
+													title="Edytuj"
+													aria-label="Edytuj"
+													className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+												>
+													<Pencil className="h-4 w-4" />
+												</Link>
+											)}
+										</div>
+									</td>
 								</tr>
 							))
 						)}
