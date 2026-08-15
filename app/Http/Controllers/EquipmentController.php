@@ -16,7 +16,7 @@ class EquipmentController extends Controller
     {
         $this->authorize('viewAny', Equipment::class);
 
-        $equipment = Equipment::query()->get();
+        $equipment = Equipment::query()->orderBy('type')->get();
 
         return Inertia::render('equipment/index', [
             'equipment' => $equipment,

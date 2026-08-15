@@ -11,22 +11,39 @@ use App\Models\Equipment;
 use App\Http\Requests\UpdateIncidentRequest;
 use App\Models\IncidentActivity;
 use App\Http\Requests\UpdateIncidentDetailsRequest;
+use Illuminate\Http\Request;
 
 class IncidentController extends Controller
 {
-    public function index(): InertiaResponse
+    public function index(Request $request): InertiaResponse
     {
 
         $this->authorize('viewAny', Incident::class);
 
+        $status = $request->string('status')->toString();
+        $allowed = array_keys(Incident::STATUSES);
+
+
+        $customStatusOrder = ['open', 'in_progress', 'resolved'];
+
         $incidents = Incident::query()
             ->with('equipment')
-            ->orderBy('status')
+            ->when(
+                $status !== '' && in_array($status, $allowed, true),
+                fn($query) => $query->where('status', $status),
+            )
+            ->orderByRaw(
+                "FIELD(status, '" . implode("','", $customStatusOrder) . "')"
+            )
             ->get();
+
 
         return Inertia::render('incidents/index', [
             'incidents' => $incidents,
-            'statuses' => Incident::STATUSES
+            'statuses' => Incident::STATUSES,
+            'filters' => [
+                'status' => in_array($status, $allowed, true) ? $status : null,
+            ],
         ]);
     }
 

@@ -2,7 +2,7 @@ import { Link } from "@inertiajs/react";
 import { AlertTriangle, FolderSearch2Icon, Pencil } from "lucide-react";
 import { useCan } from "@/hooks/use-can";
 import { statusColorClass } from "@/lib/incident-status";
-import { create, edit, show } from "@/routes/incidents";
+import { create, edit, index, show } from "@/routes/incidents";
 
 type Incident = {
 	id: number;
@@ -14,10 +14,20 @@ type Incident = {
 type Props = {
 	incidents: Incident[];
 	statuses: Record<string, string>;
+	filters: { status: string | null };
 };
 
-export default function Index({ incidents, statuses }: Props) {
+export default function Index({ incidents, statuses, filters }: Props) {
 	const { can } = useCan();
+
+	const filterLink = (status: string | null) => (status ? index({ query: { status } }) : index());
+	const chipClass = (active: boolean) =>
+		`rounded-full px-3 py-1 text-sm ${
+			active
+				? "bg-primary text-primary-foreground"
+				: "bg-muted text-muted-foreground hover:bg-accent"
+		}`;
+
 	return (
 		<div className="p-4">
 			<div className="mb-4 flex items-center justify-between gap-3">
@@ -33,6 +43,21 @@ export default function Index({ incidents, statuses }: Props) {
 						Dodaj awarię
 					</Link>
 				)}
+			</div>
+
+			<div className="mb-4 flex flex-wrap gap-2">
+				<Link href={filterLink(null)} className={chipClass(filters.status === null)}>
+					Wszystkie
+				</Link>
+				{Object.entries(statuses).map(([value, label]) => (
+					<Link
+						key={value}
+						href={filterLink(value)}
+						className={chipClass(filters.status === value)}
+					>
+						{label}
+					</Link>
+				))}
 			</div>
 
 			<div className="overflow-hidden rounded border bg-card">
