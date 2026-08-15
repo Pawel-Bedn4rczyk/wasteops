@@ -1,8 +1,8 @@
 import { Link } from "@inertiajs/react";
-import { AlertTriangle, FolderSearch2Icon } from "lucide-react";
+import { AlertTriangle, FolderSearch2Icon, Pencil } from "lucide-react";
 import { useCan } from "@/hooks/use-can";
 import { statusColorClass } from "@/lib/incident-status";
-import { create, show } from "@/routes/incidents";
+import { create, edit, show } from "@/routes/incidents";
 
 type Incident = {
 	id: number;
@@ -77,6 +77,16 @@ export default function Index({ incidents, statuses }: Props) {
 											>
 												<FolderSearch2Icon className="h-4 w-4" />
 											</Link>
+											{can("incidents.update") && (
+												<Link
+													href={edit(incident.id)}
+													title="Edytuj"
+													aria-label="Edytuj"
+													className="rounded p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground"
+												>
+													<Pencil className="h-4 w-4" />
+												</Link>
+											)}
 										</div>
 									</td>
 								</tr>

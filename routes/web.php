@@ -49,4 +49,13 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/incidents/{incident}/comments', [CommentController::class, 'store'])
         ->name('incidents.comments.store');
+
+    Route::get('/incidents/{incident}/edit', [IncidentController::class, 'edit'])
+        ->name('incidents.edit');
+
+    Route::put('/incidents/{incident}', [IncidentController::class, 'updateDetails'])
+        ->name('incidents.update-details');
+
+    Route::delete('/incidents/{incident}', [IncidentController::class, 'destroy'])
+        ->name('incidents.destroy');
 });

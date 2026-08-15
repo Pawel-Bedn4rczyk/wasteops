@@ -1,9 +1,9 @@
-import { Form } from "@inertiajs/react";
+import { Form, Link } from "@inertiajs/react";
 import { AlertTriangle } from "lucide-react";
 import { useState } from "react";
 import { useCan } from "@/hooks/use-can";
 import { statusColorClass } from "@/lib/incident-status";
-import { update } from "@/routes/incidents";
+import { edit, update } from "@/routes/incidents";
 import { store as storeComment } from "@/routes/incidents/comments";
 
 type Comment = {
@@ -46,6 +46,7 @@ export default function Show({ incident, statuses }: Props) {
 	const { can } = useCan();
 	const canComment = can("incidents.comment") && incident.status !== "resolved";
 	const canUpdateStatus = can("incidents.update_status");
+	const canEdit = can("incidents.update");
 
 	return (
 		<div className="flex min-h-[calc(100svh-3rem)] flex-col">
@@ -54,13 +55,23 @@ export default function Show({ incident, statuses }: Props) {
 					<AlertTriangle className="h-5 w-5 shrink-0" />
 					<h1 className="truncate text-lg font-semibold">{incident.title}</h1>
 				</div>
-				<button
-					type="button"
-					onClick={() => window.history.back()}
-					className="text-sm text-primary hover:underline"
-				>
-					← Wróć
-				</button>
+				<div className="flex shrink-0 items-center gap-3">
+					{canEdit && (
+						<Link
+							href={edit(incident.id)}
+							className="rounded bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+						>
+							Edytuj
+						</Link>
+					)}
+					<button
+						type="button"
+						onClick={() => window.history.back()}
+						className="text-sm text-primary hover:underline"
+					>
+						← Wróć
+					</button>
+				</div>
 			</header>
 
 			<div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4 lg:p-6">

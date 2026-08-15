@@ -10,6 +10,7 @@ use App\Http\Requests\StoreIncidentRequest;
 use App\Models\Equipment;
 use App\Http\Requests\UpdateIncidentRequest;
 use App\Models\IncidentActivity;
+use App\Http\Requests\UpdateIncidentDetailsRequest;
 
 class IncidentController extends Controller
 {
@@ -85,5 +86,33 @@ class IncidentController extends Controller
         }
 
         return redirect()->route('incidents.show', $incident);
+    }
+
+    public function edit(Incident $incident): InertiaResponse
+    {
+        $this->authorize('update', $incident);
+
+        return Inertia::render('incidents/edit', [
+            'incident' => $incident->load('equipment'),
+            'equipment' => Equipment::query()
+                ->orderBy('name')
+                ->get(['id', 'name', 'serial_number', 'type']),
+        ]);
+    }
+
+    public function updateDetails(UpdateIncidentDetailsRequest $request, Incident $incident): RedirectResponse
+    {
+        $incident->update($request->validated());
+
+        return redirect()->route('incidents.show', $incident);
+    }
+
+    public function destroy(Incident $incident): RedirectResponse
+    {
+        $this->authorize('delete', $incident);
+
+        $incident->delete();
+
+        return redirect()->route('incidents.index');
     }
 }
