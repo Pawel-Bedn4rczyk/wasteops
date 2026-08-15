@@ -40,9 +40,9 @@ cd wasteops
 ```bash
 docker run --rm \
   -u "$(id -u):$(id -g)" \
-  -v "$(pwd):/var/www/html" \
-  -w /var/www/html \
-  laravelsail/php85-composer:latest \
+  -v "$(pwd):/app" \
+  -w /app \
+  composer:latest \
   composer install --ignore-platform-reqs
 ```
 
@@ -52,20 +52,7 @@ docker run --rm \
 cp .env.example .env
 ```
 
-Dla Sail ustaw w `.env` m.in.:
-
-```env
-APP_NAME=WasteOps
-APP_URL=http://localhost
-APP_LOCALE=pl
-
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=laravel
-DB_USERNAME=sail
-DB_PASSWORD=password
-```
+Dla Sail środowisko w `.env` jest skonfigurowane.:
 
 ### 4. Uruchom kontenery
 
