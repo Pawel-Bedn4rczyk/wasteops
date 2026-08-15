@@ -28,7 +28,6 @@ class StoreCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'author_name' => ['required', 'string', 'min:2', 'max:255'],
             'body' => ['required', 'string', 'min:5'],
         ];
     }
@@ -36,10 +35,6 @@ class StoreCommentRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'author_name.required' => 'Nazwa autora jest wymagana.',
-            'author_name.string' => 'Nazwa autora musi być tekstem.',
-            'author_name.min' => 'Nazwa autora musi mieć co najmniej :min znaki.',
-            'author_name.max' => 'Nazwa autora może mieć co najwyżej :max znaków.',
             'body.required' => 'Treść komentarza jest wymagana.',
             'body.min' => 'Treść komentarza musi mieć co najmniej :min znaki.',
         ];

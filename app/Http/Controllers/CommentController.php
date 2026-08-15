@@ -11,7 +11,10 @@ class CommentController extends Controller
 {
     public function store(StoreCommentRequest $request, Incident $incident): RedirectResponse
     {
-        $comment = $incident->comments()->create($request->validated());
+        $comment = $incident->comments()->create([
+            ...$request->validated(),
+            'author_name' => $request->user()->name,
+        ]);
 
         $incident->activities()->create([
             'type' => 'comment_added',

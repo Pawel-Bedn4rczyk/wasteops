@@ -192,21 +192,6 @@ export default function Show({ incident, statuses }: Props) {
 
 											<div className="space-y-3">
 												<div className="space-y-1">
-													<label htmlFor="author_name" className="text-xs text-muted-foreground">
-														Autor
-													</label>
-													<input
-														id="author_name"
-														name="author_name"
-														type="text"
-														className="w-full rounded border border-input bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
-													/>
-													{errors.author_name && (
-														<div className="text-sm text-destructive">{errors.author_name}</div>
-													)}
-												</div>
-
-												<div className="space-y-1">
 													<label htmlFor="body" className="text-xs text-muted-foreground">
 														Treść
 													</label>
